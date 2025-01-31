@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+<!-- CSS -->
+<style>
+/* Base Styles */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background-color: #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+/* Navigation Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    height: 60px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.nav-left .title a {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.nav-center {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Container and Section Styles */
+.container {
+    max-width: 1400px;
+    margin: 80px auto 0;
+    padding: 20px;
+}
+
+.section {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Goals Form Styles */
+.form-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.form-container h2 {
+    color: #007bff;
+    margin-bottom: 30px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 10px;
+    color: #666666;
+    width: 80%;
+    text-align: left;
+}
+
+.form-container input {
+    width: 80%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* Goal Cards Style */
+.goal-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.goal-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: calc(33.33% - 30px);
+    min-width: 250px;
+    text-align: center;
+}
+
+.goal-card h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+    margin: 15px 0;
+}
+
+.progress-bar .progress {
+    background-color: #007bff;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    font-weight: 500;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Chart Containers */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.chart-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Button Styles */
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+}
+
+.action-button i {
+    font-size: 0.9em;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.edit-button {
+    background-color: #ffc107;
+}
+
+.add-contribution-button {
+    background-color: #28a745;
+}
+
+/* Form Controls */
+select, input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+[contenteditable="true"] {
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    min-width: 60px;
+    display: inline-block;
+}
+
+[contenteditable="true"]:hover {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+[contenteditable="true"]:focus {
+    outline: none;
+    border-color: #007bff;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .section,
+body.dark-mode .chart-container,
+body.dark-mode .form-container,
+body.dark-mode .goal-card {
+    background-color: #2d2d2d;
+}
+
+body.dark-mode table {
+    background-color: #2d2d2d;
+}
+
+body.dark-mode th {
+    background-color: #3d9fff;
+}
+
+body.dark-mode tr:hover {
+    background-color: #363636;
+}
+
+body.dark-mode select,
+body.dark-mode input[type="date"],
+body.dark-mode input[type="text"],
+body.dark-mode input[type="number"] {
+    background-color: #363636;
+    color: white;
+    border-color: #404040;
+}
+
+body.dark-mode .nav-link {
+    color: #fff;
+}
+
+body.dark-mode .theme-toggle {
+    color: white;
+}
+
+body.dark-mode .form-container label {
+    color: #ffffff;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3 {
+    color: #3d9fff;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .nav-center {
+        display: none;
+    }
+
+    .container {
+        padding: 10px;
+        margin-top: 60px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-card {
+        width: 100%;
+    }
+
+    .form-container {
+        margin: 10px;
+        width: 90%;
+    }
+}
+</style>
+</head>
+<body>
+    <nav class="navbar">
+    <div class="nav-left">
+        <div class="title">
+            <a href="index.html">Finance</a>
+        </div>
+    </div>
+    <div class="nav-center">
+        <a href="#goals" class="nav-link" onclick="activateTab(this)">Goals</a>
+        <a href="#budget" class="nav-link" onclick="activateTab(this)">Budget</a>
+        <a href="#transactions" class="nav-link" onclick="activateTab(this)">Transactions</a>
+        <a href="#reports" class="nav-link" onclick="activateTab(this)">Reports</a>
+        <a href="index.html" class="nav-link">Back to Home</a>
+    </div>
+    <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+</nav>
+
+    <div class="container">
+        <!-- Goals Section -->
+        <div class="section" id="goals">
+            <div class="form-container">
+                <h2>Set New Financial Goal</h2>
+                <form id="goal-form">
+                    <label for="goal-name">Goal Name</label>
+                    <input type="text" id="goal-name" name="goal-name" required>
+
+                    <label for="goal-amount">Goal Amount</label>
+                    <input type="number" id="goal-amount" name="goal-amount" required>
+
+                    <label for="target-date">Target Date</label>
+                    <input type="date" id="target-date" name="target-date" required>
+
+                    <button type="submit">Save Goal</button>
+                </form>
+            </div>
+            <div class="goal-list" id="goal-list"></div>
+        </div>
+
+        <!-- Budget Section -->
+        <div class="section" id="budget">
+            <h1>Budget Table</h1>
+            <table id="budgetTable">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Budgeted Amount</th>
+                        <th>Spent So Far</th>
+                        <th>Remaining</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="action-button" onclick="addBudgetRow()">
+                <i class="fas fa-plus"></i> Add Budget
+            </button>
+        </div>
+
+        <!-- Transaction Section -->
+        <div class="section" id="transactions">
+            <h1>Transaction Table</h1>
+            <table id="transactionTable">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Transaction Name</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="action-button" onclick="addTransactionRow()">
+                <i class="fas fa-plus"></i> Add Transaction
+            </button>
+        </div>
+
+        <!-- Reports Section -->
+        <div class="section" id="reports">
+            <h1>Financial Reports</h1>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <canvas id="budgetPieChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="spendingLineChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="goalsProgressChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- JavaScript will go here -->
+<script>
+// Constants
+const categories = ['Food', 'Rent', 'Travel', 'Entertainment', 'Others'];
+const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+
+// Chart instances
+let budgetPieChart = null;
+let spendingLineChart = null;
+let goalsProgressChart = null;
+let spendingHistory = {};
+
+// Initialize Charts
+function initializeCharts() {
+    initializePieChart();
+    initializeLineChart();
+    initializeGoalsChart();
+}
+
+function initializePieChart() {
+    const ctx = document.getElementById('budgetPieChart').getContext('2d');
+    budgetPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [],
+            datasets: [{
+                data: [],
+                backgroundColor: colors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Budget Distribution'
+                }
+            }
+        }
+    });
+}
+
+function initializeLineChart() {
+    const ctx = document.getElementById('spendingLineChart').getContext('2d');
+    spendingLineChart = new Chart(ctx, {
+        type: 'line',
+        data: { datasets: [] },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Monthly Spending Trends'
+                }
+            },
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'month',
+                        displayFormats: { month: 'MMM yyyy' }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Amount'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function initializeGoalsChart() {
+    const ctx = document.getElementById('goalsProgressChart').getContext('2d');
+    goalsProgressChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Saved',
+                    data: [],
+                    backgroundColor: '#28a745'
+                },
+                {
+                    label: 'Remaining',
+                    data: [],
+                    backgroundColor: '#dc3545'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Goals Progress'
+                }
+            },
+            scales: {
+                y: {
+                    stacked: true,
+                    beginAtZero: true
+                },
+                x: {
+                    stacked: true
+                }
+            }
+        }
+    });
+}
+
+// Goals Management
+function displayGoals() {
+    const goals = JSON.parse(localStorage.getItem('goals')) || [];
+    const goalList = document.getElementById('goal-list');
+    goalList.innerHTML = '';
+
+    goals.forEach((goal, index) => {
+        const remaining = goal.amount - goal.saved;
+        const progressPercentage = (goal.saved / goal.amount) * 100;
+        
+        const goalCard = document.createElement('div');
+        goalCard.classList.add('goal-card');
+        goalCard.innerHTML = `
+            <h3>${goal.name}</h3>
+            <p>Goal Amount: $${goal.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <p>Target Date: ${goal.date}</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: ${progressPercentage}%;"></div>
+            </div>
+            <p>Amount Saved: $${goal.saved.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <p>Amount Remaining: $${remaining.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <div class="actions">
+                <button class="edit-button" onclick="editGoal(${index})">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="delete-btn" onclick="deleteGoal(${index})">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="add-contribution-button" onclick="addContribution(${index})">
+                    <i class="fas fa-plus"></i> Add
+                </button>
+            </div>
+        `;
+        goalList.appendChild(goalCard);
+    });
+    updateGoalsChart();
+}
+
+function updateGoalsChart() {
+    const goals = JSON.parse(localStorage.getItem('goals')) || [];
+    const labels = goals.map(goal => goal.name);
+    const savedData = goals.map(goal => goal.saved);
+    const remainingData = goals.map(goal => goal.amount - goal.saved);
+
+    goalsProgressChart.data.labels = labels;
+    goalsProgressChart.data.datasets[0].data = savedData;
+    goalsProgressChart.data.datasets[1].data = remainingData;
+    goalsProgressChart.update();
+}
+
+// Form Handlers
+document.getElementById('goal-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const goals = JSON.parse(localStorage.getItem('goals')) || [];
+    const editIndex = this.dataset.editIndex;
+    
+    const goalData = {
+        name: document.getElementById('goal-name').value,
+        amount: parseFloat(document.getElementById('goal-amount').value),
+        date: document.getElementById('target-date').value,
+        saved: editIndex !== undefined ? goals[editIndex].saved : 0
+    };
+
+    if (editIndex !== undefined) {
+        goals[editIndex] = goalData;
+        delete this.dataset.editIndex;
+        document.querySelector('#goal-form button').textContent = 'Save Goal';
+    } else {
+        goals.push(goalData);
+    }
+
+    localStorage.setItem('goals', JSON.stringify(goals));
+    this.reset();
+    displayGoals();
+});
+
+// Budget and Transaction Management
+function addBudgetRow() {
+    const table = document.getElementById('budgetTable').getElementsByTagName('tbody')[0];
+    const newRow = document.createElement('tr');
+
+    newRow.innerHTML = `
+        <td>${createCategoryDropdown(true)}</td>
+        <td contenteditable="true">0</td>
+        <td contenteditable="true">0</td>
+        <td contenteditable="true">0</td>
+        <td>
+            <button class="delete-btn" onclick="deleteRow(this)">
+                <i class="fas fa-trash"></i>
+            </button>
+        </td>
+    `;
+
+    table.appendChild(newRow);
+    updateBudgetDropdowns();
+    updatePieChart();
+}
+
+function addTransactionRow() {
+    const table = document.getElementById('transactionTable').getElementsByTagName('tbody')[0];
+    const newRow = document.createElement('tr');
+
+    newRow.innerHTML = `
+        <td>${createCategoryDropdown(false)}</td>
+        <td contenteditable="true">Transaction Name</td>
+        <td><input type="date" value="${new Date().toISOString().split('T')[0]}" /></td>
+        <td contenteditable="true">0</td>
+        <td contenteditable="true">Description</td>
+        <td>
+            <button class="delete-btn" onclick="deleteRow(this)">
+                <i class="fas fa-trash"></i>
+            </button>
+            <button onclick="updateBudget(this)">
+                <i class="fas fa-sync"></i>
+            </button>
+        </td>
+    `;
+
+    table.appendChild(newRow);
+}
+
+// Helper Functions
+function createCategoryDropdown(isBudgetTable = false) {
+    const select = document.createElement('select');
+    const usedCategories = isBudgetTable ? getUsedCategories() : [];
+
+    categories.forEach(category => {
+        if (isBudgetTable && usedCategories.includes(category)) {
+            return;
+        }
+        
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        select.appendChild(option);
+    });
+
+    if (isBudgetTable) {
+        select.addEventListener('change', updateBudgetDropdowns);
+    }
+
+    return select.outerHTML;
+}
+
+function getUsedCategories() {
+    const budgetTable = document.getElementById('budgetTable');
+    const rows = budgetTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    return Array.from(rows).map(row => row.querySelector('select').value);
+}
+
+function updateBudgetDropdowns() {
+    const budgetTable = document.getElementById('budgetTable');
+    const rows = budgetTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    const usedCategories = getUsedCategories();
+
+    Array.from(rows).forEach(row => {
+        const currentSelect = row.querySelector('select');
+        const currentValue = currentSelect.value;
+        
+        const newSelect = document.createElement('select');
+        categories.forEach(category => {
+            if (category === currentValue || !usedCategories.includes(category)) {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                option.selected = category === currentValue;
+                newSelect.appendChild(option);
+            }
+        });
+
+        newSelect.addEventListener('change', updateBudgetDropdowns);
+        currentSelect.parentNode.replaceChild(newSelect, currentSelect);
+    });
+}
+
+// Goal Management Functions
+function editGoal(index) {
+    const goals = JSON.parse(localStorage.getItem('goals')) || [];
+    const goal = goals[index];
+    
+    document.getElementById('goal-name').value = goal.name;
+    document.getElementById('goal-amount').value = goal.amount;
+    document.getElementById('target-date').value = goal.date;
+    
+    const submitButton = document.querySelector('#goal-form button');
+    submitButton.innerHTML = '<i class="fas fa-save"></i> Update Goal';
+    
+    const form = document.getElementById('goal-form');
+    form.dataset.editIndex = index;
+    
+    form.scrollIntoView({ behavior: 'smooth' });
+}
+
+function deleteGoal(index) {
+    if (confirm('Are you sure you want to delete this goal?')) {
+        const goals = JSON.parse(localStorage.getItem('goals')) || [];
+        goals.splice(index, 1);
+        localStorage.setItem('goals', JSON.stringify(goals));
+        displayGoals();
+    }
+}
+
+function addContribution(index) {
+    const amount = prompt('Enter contribution amount:');
+    if (amount && !isNaN(amount)) {
+        const goals = JSON.parse(localStorage.getItem('goals')) || [];
+        goals[index].saved = (goals[index].saved || 0) + parseFloat(amount);
+        localStorage.setItem('goals', JSON.stringify(goals));
+        displayGoals();
+    }
+}
+
+// Budget and Transaction Functions
+function deleteRow(button) {
+    const row = button.closest('tr');
+    const tableId = row.closest('table').id;
+    
+    if (confirm('Are you sure you want to delete this entry?')) {
+        row.remove();
+        if (tableId === 'budgetTable') {
+            updateBudgetDropdowns();
+            updatePieChart();
+        }
+    }
+}
+
+function updateBudget(button) {
+    const row = button.closest('tr');
+    const category = row.querySelector('select').value;
+    const amount = parseFloat(row.cells[3].textContent) || 0;
+    const date = row.querySelector('input[type="date"]').value;
+
+    const budgetTable = document.getElementById('budgetTable').getElementsByTagName('tbody')[0].rows;
+    
+    for (let budgetRow of budgetTable) {
+        const budgetCategory = budgetRow.querySelector('select').value;
+        
+        if (budgetCategory === category) {
+            const spentCell = budgetRow.cells[2];
+            const remainingCell = budgetRow.cells[3];
+            const budgetedAmount = parseFloat(budgetRow.cells[1].textContent) || 0;
+            const spentSoFar = parseFloat(spentCell.textContent) || 0;
+
+            spentCell.textContent = (spentSoFar + amount).toFixed(2);
+            remainingCell.textContent = (budgetedAmount - parseFloat(spentCell.textContent)).toFixed(2);
+            
+            updateSpendingHistory(category, date, amount);
+            updateLineChart();
+            updatePieChart();
+            
+            // Save to localStorage
+            saveTableData();
+            break;
+        }
+    }
+}
+
+// Chart Update Functions
+function updatePieChart() {
+    const budgetTable = document.getElementById('budgetTable');
+    const rows = budgetTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    
+    const labels = [];
+    const spentData = [];
+    const remainingData = [];
+
+    Array.from(rows).forEach(row => {
+        const category = row.querySelector('select').value;
+        const budgetedAmount = parseFloat(row.cells[1].textContent) || 0;
+        const spentAmount = parseFloat(row.cells[2].textContent) || 0;
+
+        labels.push(category);
+        spentData.push(spentAmount);
+        remainingData.push(budgetedAmount - spentAmount);
+    });
+
+    budgetPieChart.data.labels = labels;
+    budgetPieChart.data.datasets = [
+        {
+            label: 'Spent',
+            data: spentData,
+            backgroundColor: colors,
+        },
+        {
+            label: 'Remaining',
+            data: remainingData,
+            backgroundColor: colors.map(color => color + '88'),
+        }
+    ];
+    budgetPieChart.update();
+}
+
+// Data Persistence
+function saveTableData() {
+    const budgetData = getTableData('budgetTable');
+    const transactionData = getTableData('transactionTable');
+    
+    localStorage.setItem('budgetData', JSON.stringify(budgetData));
+    localStorage.setItem('transactionData', JSON.stringify(transactionData));
+}
+
+function getTableData(tableId) {
+    const table = document.getElementById(tableId);
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    const data = [];
+
+    Array.from(rows).forEach(row => {
+        const rowData = {};
+        const cells = row.getElementsByTagName('td');
+        
+        if (tableId === 'budgetTable') {
+            rowData.category = row.querySelector('select').value;
+            rowData.budgeted = cells[1].textContent;
+            rowData.spent = cells[2].textContent;
+            rowData.remaining = cells[3].textContent;
+        } else {
+            rowData.category = row.querySelector('select').value;
+            rowData.name = cells[1].textContent;
+            rowData.date = cells[2].querySelector('input').value;
+            rowData.amount = cells[3].textContent;
+            rowData.description = cells[4].textContent;
+        }
+        
+        data.push(rowData);
+    });
+
+    return data;
+}
+
+function loadSavedData() {
+    const budgetData = JSON.parse(localStorage.getItem('budgetData')) || [];
+    const transactionData = JSON.parse(localStorage.getItem('transactionData')) || [];
+
+    budgetData.forEach(item => addBudgetRowWithData(item));
+    transactionData.forEach(item => addTransactionRowWithData(item));
+    displayGoals();
+}
+
+// Navigation and Theme
+function activateTab(element) {
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    element.classList.add('active');
+
+    // Show/hide sections based on active tab
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+    });
+
+    const targetId = element.getAttribute('href').substring(1);
+    document.getElementById(targetId).style.display = 'block';
+}
+
+// Initialize everything when the document loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const icon = themeToggle.querySelector('i');
+    
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+    
+    themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        
+        icon.classList.toggle('fa-moon', !isDarkMode);
+        icon.classList.toggle('fa-sun', isDarkMode);
+        
+        localStorage.setItem('darkMode', isDarkMode);
+    });
+
+    // Initialize charts
+    initializeCharts();
+    
+    // Load saved data
+    loadSavedData();
+    
+    // Activate default tab
+    const defaultTab = document.querySelector('.nav-link');
+    activateTab(defaultTab);
+    
+    // Set up auto-save
+    ['budgetTable', 'transactionTable'].forEach(tableId => {
+        document.getElementById(tableId).addEventListener('input', saveTableData);
+    });
+});
+</script>
+</body>
+</html>

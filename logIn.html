@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - Finance Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background-image: url('multibg.jpg'); /* Use the same background as your welcome section */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Background Overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+
+        .login-container h2 {
+            margin-bottom: 30px;
+            color: #007bff;
+            font-size: 2em;
+        }
+
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .login-container button {
+            width: 40%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .login-container p {
+            margin-top: 25px;
+            color: #666666;
+        }
+
+        .login-container p a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .login-container p a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .forgot-password {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Return to Home Button */
+        .return-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        .return-home a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: rgba(0, 123, 255, 0.8);
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .return-home a:hover {
+            background-color: rgba(0, 86, 179, 0.9);
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .login-container {
+                background-color: rgba(45, 45, 45, 0.9);
+            }
+
+            .login-container input[type="text"],
+            .login-container input[type="password"] {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+                border-color: #444;
+            }
+
+            .login-container p {
+                color: #ffffff;
+            }
+
+            .login-container p a,
+            .forgot-password a {
+                color: #3391ff;
+            }
+
+            .login-container p a:hover,
+            .forgot-password a:hover {
+                color: #66aeff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="return-home">
+        <a href="index.html">← Back to Home</a>
+    </div>
+    
+    <div class="login-container">
+        <h2>Welcome Back</h2>
+        <form action="index.html" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Log In</button>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Register</a></p>
+        <div class="forgot-password">
+            <a href="forgot-password.html">Forgot Password?</a>
+        </div>
+    </div>
+</body>
+</html>

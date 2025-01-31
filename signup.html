@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Finance Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background-image: url('multibg.jpg'); /* Use the same background as main site */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Background Overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .signup-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+
+        .signup-container h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+            font-size: 2em;
+        }
+
+        .signup-container p {
+            color: #666666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .signup-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; /* Center form items */
+    width: 100%;         /* Take full container width */
+}
+
+.signup-container input {
+    width: calc(100% - 30px); /* Adjust width accounting for padding */
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box; /* Include padding in width calculation */
+    margin: 0 auto;        /* Center the input fields */
+}
+
+        .signup-container input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .register-button {
+            width: 40%;
+            margin: 20px auto 0;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .register-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            margin-top: 20px;
+            color: #666666;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Return to Home Button */
+        .return-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        .return-home a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: rgba(0, 123, 255, 0.8);
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .return-home a:hover {
+            background-color: rgba(0, 86, 179, 0.9);
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .signup-container {
+                background-color: rgba(45, 45, 45, 0.9);
+            }
+
+            .signup-container input {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+                border-color: #444;
+            }
+
+            .signup-container p,
+            .login-link {
+                color: #ffffff;
+            }
+
+            .signup-container p a,
+            .login-link a {
+                color: #3391ff;
+            }
+
+            .signup-container p a:hover,
+            .login-link a:hover {
+                color: #66aeff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="return-home">
+        <a href="index.html">← Back to Home</a>
+    </div>
+    
+    <div class="signup-container">
+        <h2>Ready to meet your Financial Goals?</h2>
+        <p>Start your journey to better financial management today</p>
+        <form>
+            <input type="text" placeholder="First Name" required>
+            <input type="text" placeholder="Last Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Create Password" required>
+            <button type="submit" class="register-button">Register</button>
+        </form>
+        <p class="login-link">Already have an account? <a href="login.html">Log In</a></p>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Registration successful!');
+            window.location.href = 'login.html'; // Redirect to login page after registration
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+
+    #intro-section {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    padding-top: 0; /* Remove padding */
+}
+
+#intro-section .bg {
+    background-image: url('welimg.jpg');
+    min-height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    top: 0; /* Ensure it starts from the very top */
+    left: 0;
+    right: 0;
+}
+
+    #intro-section .content {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        color: white;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    #intro-section .content-left,
+    #intro-section .content-right {
+        width: 35%;
+        padding: 20px;
+        background: rgba(0, 123, 255, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+    }
+
+    #intro-section .content-right {
+        padding: 40px;
+    }
+
+    #intro-section .form-control {
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        margin-bottom: 15px;
+    }
+
+    #intro-section .btn-join {
+        margin-top: 20px;
+    }
+
+    #intro-section .forgot-password {
+        color: white;
+        text-decoration: none;
+    }
+
+    #intro-section .create-account a {
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        #intro-section .content-left,
+        #intro-section .content-right {
+            background: rgba(0, 123, 255, 0.4);
+        }
+
+        #intro-section .form-control {
+            background: rgba(255, 255, 255, 0.8);
+        }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        #intro-section .content {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        #intro-section .content-left,
+        #intro-section .content-right {
+            width: 90%;
+        }
+    }
+        section {
+            min-height: 100vh;
+            padding-top: 80px;
+            scroll-margin-top: 60px;
+        }
+
+        #welcome-section {
+            background-image: url('multibg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+#welcome-section .cta {
+    margin-top: 150px; /* Pushes the content down */
+    padding: 40px; /* More internal spacing */
+    background-color: rgba(255, 255, 255, 0); /* More transparent */
+}
+
+#welcome-section .cta p {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: #666666; 
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+#welcome-section .cta button {
+    margin-top: 20px; /* Extra space above button */
+}
+
+/*dashboard section */
+#dashboard-section .container {
+    margin-top: 60px; 
+}
+        #dashboard-section {
+            background-image: url('dashboardbg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Background Overlays */
+        #welcome-section::before,
+        #dashboard-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+     
+        #welcome-section .cta,
+        #dashboard-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+      
+        .cta {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        /* dark mode styles */
+        .dark-mode #welcome-section::before,
+        .dark-mode #dashboard-section::before {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            width: 100%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .navbar .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-grow: 1;
+            margin: 0 40px;
+        }
+
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1em;
+            padding: 5px 15px;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            min-width: 200px;
+            justify-content: flex-end;
+        }
+
+        .navbar .nav-buttons button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navbar .nav-buttons .login-button {
+            background-color: white;
+            color: #007bff;
+            border: 1px solid #ccc;
+        }
+
+        /* Card Styles */
+        .container {
+            margin-top: 40px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .call-to-action {
+            text-align: center;
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        .call-to-action h2 {
+            font-size: 2.5em;
+            color: #007bff;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: calc(25% - 30px);
+            min-width: 250px;
+            text-align: center;
+            margin: 0;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1.1em;
+            color: #007bff;
+        }
+
+        .card p {
+            margin: 10px 0;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .card small {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .card .comparison {
+            color: green;
+        }
+
+        /* CTA and Set Goals Styles */
+        .cta {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .set-goals {
+            text-align: center;
+            margin: 40px auto;
+            width: 100%;
+        }
+
+        /* Theme Switch Styles */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 24px;
+            position: relative;
+            width: 48px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 16px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 16px;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .dark-mode .navbar {
+            background-color: #2d2d2d;
+        }
+
+        .dark-mode .navbar .title,
+        .dark-mode .navbar .nav-links a {
+            color: #3391ff;
+        }
+
+        .dark-mode .navbar .nav-buttons .login-button {
+            background-color: #2d2d2d;
+            color: #3391ff;
+            border: 1px solid #666;
+        }
+
+        .dark-mode .card,
+        .dark-mode .cta {
+            background-color: #2d2d2d;
+        }
+
+        .dark-mode .card small,
+        .dark-mode .cta p {
+            color: #ffffff;
+        }
+/* About Section Styles */
+#about-section {
+    background-image: url('multibg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    color: #666666;
+}
+
+#about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+#about-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.about-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.team-section {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.team-section h3 {
+    color: #007bff;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+.value-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.value-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: calc(33.33% - 30px);
+    min-width: 250px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+}
+
+.value-card h4 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.value-card p {
+    color: #666666;
+    font-size: 1.1em;
+}
+
+/* Dark Mode Styles for About Section */
+.dark-mode #about-section {
+    color: #ffffff;
+}
+
+.dark-mode .value-card {
+    background-color: #2d2d2d;
+}
+
+.dark-mode .value-card h4 {
+    color: #3391ff;
+}
+
+.dark-mode .value-card p {
+    color: #ffffff;
+}
+
+/* Responsive Styles for About Section */
+@media (max-width: 768px) {
+    .value-card {
+        width: 100%;
+    }
+    
+    .team-section {
+        padding: 0 20px;
+    }
+}
+
+        /* Footer Styles */
+        footer {
+            padding: 10px;
+            text-align: right;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        .dark-mode footer {
+            background-color: #2d2d2d;
+        }
+
+        .dark-mode footer p {
+            color: #ffffff;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 20px;
+            }
+
+            .navbar .nav-container {
+                flex-direction: column;
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .navbar .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            .navbar .nav-buttons {
+                width: 100%;
+                justify-content: flex-start;
+                margin-top: 10px;
+            }
+
+            .card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<section id="intro-section"> <!-- margin-top to account for fixed navbar -->
+    <div class="bg">
+        <!-- Content -->
+        <div class="content">
+            <div class="content-left">
+                <h1>Empower Your Finances</h1>
+                <p>Welcome to our leading finance services in Islamabad. Take control of your financial future with our advanced finance tracker tools. Let's thrive together!</p>
+                <button class="btn btn-primary btn-join" onclick="window.location.href='#welcome-section'">Learn More</button>
+            </div>
+            <div class="content-right">
+                <h2>Log In</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group remember-me">
+                        <div>
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">Remember Me</label>
+                        </div>
+                        <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <div class="form-group submit-button">
+                        <button type="submit" class="btn btn-login">Log In</button>
+                    </div>
+                    <div class="form-group create-account">
+                        <a href="signup.html">Create Account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+    <nav class="navbar">
+        <div class="title" id="title">Finance</div>
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="#welcome-section">Home</a>
+                <a href="#dashboard-section">Dashboard</a>
+                <a <a href="goals.html">Features</a>
+                <a href="#about-section">About Us</a>
+            </div>
+            <div class="nav-buttons">
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider"></div>
+                    </label>
+                </div>
+                <button class="login-button" id="login-button">Log In</button>
+                <button class="register-button btn-primary" id="register-button">Register</button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="welcome-section">
+        <div class="cta">
+            <p>Explore more about the project.</p>
+            <button id="explore-button" class="btn-primary">Explore More</button>
+        </div>
+    </section>
+
+    <section id="dashboard-section">
+        <div class="container">
+            <div class="call-to-action">
+                <h2>Manage Your Money Efficiently</h2>
+            </div>
+
+            <div class="card-container">
+                <div class="card">
+                    <h3>Total Balance</h3>
+                    <p>$1856.894</p>
+                    <small class="date-range"></small>
+                    <small class="comparison">+157% last year</small>
+                </div>
+                <div class="card">
+                    <h3>Total Income</h3>
+                    <p>$1056.894</p>
+                    <small class="date-range"></small>
+                    <small class="comparison">+120% last year</small>
+                </div>
+                <div class="card">
+                    <h3>Total Spending</h3>
+                    <p>$800.000</p>
+                    <small class="date-range"></small>
+                    <small class="comparison">+50% last year</small>
+                </div>
+            </div>
+
+            <div class="set-goals">
+                <button id="set-goal-button" class="btn-primary">Set Goals</button>
+            </div>
+        </div>
+    </section>
+<section id="about-section">
+    <div class="container">
+        <div class="call-to-action">
+            <h2>About Us</h2>
+        </div>
+        
+        <div class="about-content">
+            <div class="card-container">
+                <div class="card">
+                    <h3>Our Mission</h3>
+                    <p>Empowering individuals with smart financial solutions for a secure future.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Our Vision</h3>
+                    <p>To revolutionize personal finance management through innovative technology.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>What We Do</h3>
+                    <p>Provide comprehensive financial tracking and management tools for personal and business use.</p>
+                </div>
+            </div>
+
+            <div class="team-section">
+                <h3>Our Values</h3>
+                <div class="value-cards">
+                    <div class="value-card">
+                        <h4>Innovation</h4>
+                        <p>Constantly evolving our solutions</p>
+                    </div>
+                    <div class="value-card">
+                        <h4>Security</h4>
+                        <p>Your financial data safety is our priority</p>
+                    </div>
+                    <div class="value-card">
+                        <h4>Reliability</h4>
+                        <p>Consistent and dependable service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <footer>
+        <p>&copy; 2025 Finance. All rights reserved.</p>
+    </footer>
+
+   <script>
+    // Theme toggle functionality
+    const checkbox = document.getElementById('checkbox');
+    
+    // Check for saved theme preference
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        checkbox.checked = true;
+    }
+
+    // Toggle theme
+    checkbox.addEventListener('change', function() {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', checkbox.checked);
+    });
+
+    // Card Dates Functions
+    function getCurrentDate() {
+        const date = new Date();
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
+                      'August', 'September', 'October', 'November', 'December'];
+        
+        let day = date.getDate();
+        let month = months[date.getMonth()];
+        let year = date.getFullYear();
+
+        return {
+            formatted: `${day} ${month} ${year}`,
+            month: month,
+            year: year
+        };
+    }
+
+    function getStartDate() {
+        const date = new Date();
+        date.setDate(date.getDate() - 25); // Go back 25 days
+        
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
+                      'August', 'September', 'October', 'November', 'December'];
+        
+        let day = date.getDate();
+        let month = months[date.getMonth()];
+        let year = date.getFullYear();
+
+        return `${day} ${month} ${year}`;
+    }
+
+    function updateCardDates() {
+        const startDate = getStartDate();
+        const currentDate = getCurrentDate().formatted;
+        
+        // Update all cards with new date range
+        const dateElements = document.querySelectorAll('.card .date-range');
+        dateElements.forEach(element => {
+            element.textContent = `${startDate} - ${currentDate}`;
+        });
+    }
+
+    // Navigation functions
+    function navigateToPage(id, url) {
+        document.getElementById(id).addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = url;
+        });
+    }
+
+    // Initialize all dynamic content
+    updateCardDates();
+
+    // Set update intervals
+    setInterval(updateCardDates, 60000); // Update card dates every minute
+
+    // Setup all navigation buttons 
+    navigateToPage('set-goal-button', 'set-goal.html');
+    navigateToPage('login-button', 'login.html');
+    navigateToPage('register-button', 'signup.html');
+    navigateToPage('title', 'index.html');
+
+    //  login form submission handler
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            window.location.href = 'index.html#dashboard-section';
+        });
+
+
+    //  smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // separate event listener for explore button
+    document.getElementById('explore-button').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('#about-section').scrollIntoView({
+            behavior: 'smooth'
+        });
+document.getElementById('set-goal-button').addEventListener('click', function() {
+    window.location.href = 'goals.html';
+});
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        // If it's the Features link (goals.html), let it proceed normally
+        if (this.getAttribute('href') === 'goals.html') {
+            return true;
+        }
+        
+        // For all other internal links, keep the smooth scroll behavior
+        if (this.getAttribute('href').startsWith('#')) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+    });
+</script>
+</body>
+</html>
